@@ -27,7 +27,5 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & Ow
 	Index++;
 	BlackboardComp->SetValueAsInt(IndexKey.SelectedKeyName, Index%PatrolPoints.Num());
 
-
-	UE_LOG(LogTemp, Warning, TEXT("Waypoint index = %i"), Index)
 	return EBTNodeResult::Succeeded;
 }
