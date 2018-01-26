@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 
 
+
 // Sets default values
 ATile::ATile()
 {
@@ -34,6 +35,8 @@ void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn,
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
 }
 
 // Called every frame
