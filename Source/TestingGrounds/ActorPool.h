@@ -21,4 +21,7 @@ public:
 	void Return(AActor* ActorToReturn);
 		
 	void Add(AActor* ActorToAdd);
+
+private:
+	AActor *NavMeshBoundsVolume = nullptr;
 };

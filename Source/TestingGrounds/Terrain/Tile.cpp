@@ -36,8 +36,13 @@ void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn,
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
+	
+}
+
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Pool->Return(NavMeshBoundsVolume);
 }
 
 // Called every frame
@@ -50,6 +55,19 @@ void ATile::SetPool(UActorPool * InPool)
 {
 	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(InPool->GetName()));
 	Pool = InPool;
+
+	PositionNavMeshBoundsVolume();
+}
+
+void ATile::PositionNavMeshBoundsVolume()
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (!NavMeshBoundsVolume)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not enough actors in pool"));
+		return;
+	}
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
 }
 
 bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
