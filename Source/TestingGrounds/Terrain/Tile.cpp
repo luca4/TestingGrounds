@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Engine/World.h"
 #include "AI/Navigation/NavigationSystem.h"
+#include "GameFramework/Pawn.h"
 #include "ActorPool.h"
 
 // Sets default values
@@ -26,6 +27,27 @@ void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn,
 	{
 		PlaceActor(ToSpawn, SpawnPosition);
 	}
+}
+
+void ATile::PlaceAIPawns(TSubclassOf<APawn> ToSpawn, int MinSpawn, int MaxSpawn, float Radius)
+{
+	//Pawn->SpawnDefaultController
+	//Pawn->Tag.add(...
+	TArray<FSpawnPosition> SpawnPositions = RandomSpawnsPositions(MinSpawn, MaxSpawn, Radius, 1, 1);
+	for (FSpawnPosition SpawnPosition : SpawnPositions)
+	{
+		PlaceAIPawn(ToSpawn, SpawnPosition);
+	}	
+}
+
+void ATile::PlaceAIPawn(TSubclassOf<APawn> &ToSpawn, FSpawnPosition SpawnPosition)
+{
+	APawn *Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn);
+	Spawned->SetActorRelativeLocation(SpawnPosition.Location);
+	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
+	Spawned->SpawnDefaultController();
+	Spawned->Tags.Add(FName("Enemy"));
 }
 
 TArray<FSpawnPosition> ATile::RandomSpawnsPositions(int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
