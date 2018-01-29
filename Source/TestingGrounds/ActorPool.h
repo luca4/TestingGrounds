@@ -23,5 +23,6 @@ public:
 	void Add(AActor* ActorToAdd);
 
 private:
-	AActor *NavMeshBoundsVolume = nullptr;
+
+	TArray<AActor*> Pool;
 };

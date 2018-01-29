@@ -16,27 +16,19 @@ UActorPool::UActorPool()
 
 AActor * UActorPool::Checkout()
 {
-	return NavMeshBoundsVolume;
+	if (Pool.Num() == 0)
+	{
+		return nullptr;
+	}
+	return Pool.Pop();
 }
 
 void UActorPool::Return(AActor * ActorToReturn)
 {
-	if (!ActorToReturn)
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s Returned null actor"), *GetName())
-		return;
-	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor returned: {%s}."), *GetName(), *ActorToReturn->GetName())
-	//ActorToReturn = NavMeshBoundsVolume;
+	Add(ActorToReturn);
 }
 
 void UActorPool::Add(AActor * ActorToAdd)
 {
-	if (!ActorToAdd)
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s Added null actor"), *GetName())
-		return;
-	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor adde: {%s}."), *GetName(), *ActorToAdd->GetName());
-	//Return(ActorToAdd);
+	Pool.Push(ActorToAdd);
 }
