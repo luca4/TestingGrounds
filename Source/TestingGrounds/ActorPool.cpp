@@ -25,10 +25,12 @@ AActor * UActorPool::Checkout()
 
 void UActorPool::Return(AActor * ActorToReturn)
 {
-	Add(ActorToReturn);
+	if(ActorToReturn)
+		Add(ActorToReturn);
 }
 
 void UActorPool::Add(AActor * ActorToAdd)
 {
-	Pool.Push(ActorToAdd);
+	if(ActorToAdd)
+		Pool.Push(ActorToAdd);
 }
